@@ -1,0 +1,46 @@
+#include <IRremote.h>
+
+#include <Servo.h>
+
+
+Servo mainservo; //Servo
+
+
+//Define temperature sensor pin to A0
+#define tempPin A0
+//Define motion sensor pin to 7
+#define motionPin 7
+//Define servo pin to 3
+#define servoPin 3
+
+int pos = 0; //Servo position in the beginning
+
+
+
+void setup() {
+  pinMode(tempPin, INPUT);
+  pinMode(motionPin, INPUT);
+  Serial.begin(400);
+}
+
+void loop(){
+
+  if(digitalRead(motionPin) == HIGH){
+    int test = 30;
+  	float temperature_value = analogRead(tempPin);     //Reads temperature from the pin (1 celcius correspond to 2millivolt)
+  	float temp = (temperature_value * 5.0) / 1024;    //Calculation to voltage
+  	float tempC = (temp - 0.5) * 100;      //Calculation to make temperature celcius
+  	Serial.println(tempC);
+    if(tempC > test){ //If temperature is greater than given parameter and motion sensor does not detect movement
+
+      mainservo.attach(servoPin);
+      delay(200);
+      mainservo.write(180);
+      delay(2000);
+      mainservo.write(0);
+      delay(2000);
+    }
+  }else{
+      mainservo.detach();
+    }
+}
