@@ -1,0 +1,43 @@
+//Defining temperature sensor to A0
+#define tempPin A0
+
+//Defining motor control pins
+//input_3 and input_4 decide motor direction
+#define input_3 7 
+#define input_4 6
+//Enabling the motor and PWM
+#define enable 10
+//defining motion sensor pin to 12
+#define motionPin 12
+
+
+void setup()
+{
+  pinMode(input_3, OUTPUT);
+  pinMode(input_4, OUTPUT);
+  pinMode(enable, OUTPUT);
+}
+
+void loop()
+{
+  if(digitalRead(motionPin) == LOW){  //If motion sensor detects motion
+    float temperature_value = analogRead(tempPin);     //Reads temperature from the pin (1 celcius correspond to 2millivolt)
+    float temp = (temperature_value * 5.0) / 1024;    //Calculation to voltage
+    float tempC = (temp - 0.5) * 100;      //Calculation to make temperature celcius
+    Serial.println(tempC);
+    float test = 20;
+
+    if(tempC > test){  // If temperature is greater than given parameter
+      analogWrite(enable, 255);  // Spins motor with given speed up to 255
+      digitalWrite(input_3, HIGH); 
+      digitalWrite(input_4, LOW); //If you switch input_4 HIGH and input_3 LOW the motor will spin the other way around
+      
+      delay(2000); //Spin for 2000 ms --> 2 seconds 
+      analogWrite(enable,0);
+
+  	}
+  }else{ //else do nothing
+    analogWrite(enable, 0); //Speed is 0 so motor does not spin
+  }
+
+}
