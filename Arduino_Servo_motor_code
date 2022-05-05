@@ -1,8 +1,5 @@
-#include <IRremote.h>
 
 #include <Servo.h>
-
-
 Servo mainservo; //Servo
 
 
@@ -26,7 +23,7 @@ void setup() {
 void loop(){
 
   if(digitalRead(motionPin) == HIGH){
-    int test = 30;
+    int test = 20;
   	float temperature_value = analogRead(tempPin);     //Reads temperature from the pin (1 celcius correspond to 2millivolt)
   	float temp = (temperature_value * 5.0) / 1024;    //Calculation to voltage
   	float tempC = (temp - 0.5) * 100;      //Calculation to make temperature celcius
